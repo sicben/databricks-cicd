@@ -1,0 +1,30 @@
+name: deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check notebook exists
+        run: |
+          ls -la
+          test -f hello.notebook
+
+  deploy:
+    needs: test
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish to Databricks prod
+        env:
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+          DB_HOST: dbc-95b22a72-a85f.cloud.databricks.com
+          RUN_ID: ${{ github.run_number }}
+        run: |
+          pip install requests
+          python deploy.py
