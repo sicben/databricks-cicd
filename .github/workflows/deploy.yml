@@ -12,7 +12,7 @@ jobs:
       - name: Check notebook exists
         run: |
           ls -la
-          test -f hello.notebook
+          test -f hello.ipynb
 
   deploy:
     needs: test
