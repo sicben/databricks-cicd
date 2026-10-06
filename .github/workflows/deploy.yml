@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check notebook exists
+      - name: Check notebooks exist
         run: |
           ls -la
-          test -f hello.ipynb
+          test -n "$(find . -name '*.ipynb' -not -path '*/.ipynb_checkpoints/*' -not -path './.git/*')"
 
   deploy:
     needs: test
